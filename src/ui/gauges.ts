@@ -1,6 +1,6 @@
-import type { RunState } from "../engine/types";
+import { SKILL_NAMES, type RunState } from "../engine/types";
 import { formatNombre } from "./format";
-import { iconeCarburant, iconeCoque, iconeMoral, iconeReputation, iconeSlagCompteur } from "./icons";
+import { iconeCarburant, iconeCoque, iconeMoral, iconeReputation, iconeSlagCompteur, iconeStat } from "./icons";
 
 function classeRemplissage(valeur: number): string {
   if (valeur <= 20) return "jauge__remplissage jauge__remplissage--critique";
@@ -33,6 +33,11 @@ export function rendreJauges(run: RunState): string {
         <span class="entete-icone">${iconeMoral(14)}<strong>${run.stats.moral}</strong></span>
         <span class="entete-icone">${iconeReputation(14)}<strong>${run.stats.reputation}</strong></span>
         <span>Planètes <strong>${run.planetesDecouvertes}</strong></span>
+      </div>
+      <div class="stats-secondaires">
+        ${SKILL_NAMES.map(
+          (nom) => `<span class="entete-icone">${iconeStat(nom, 14)}<strong>${run.skills[nom]}</strong></span>`,
+        ).join("")}
       </div>
     </div>
   `;

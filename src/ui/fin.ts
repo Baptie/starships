@@ -22,7 +22,7 @@ export function rendreFin(
           <div><span class="entete-icone">${iconeSlagCompteur(14)}<span>Slag</span></span><strong>${formatNombre(run.monnaieRun)}</strong></div>
           <div><span class="entete-icone">${iconeIrridiumCompteur(14)}<span>Irridium gagné</span></span><strong>${formatNombre(gainConversion ?? 0)}</strong></div>
         </div>
-        <button class="bouton" data-action="rejouer" type="button">Nouveau run</button>
+        <button class="bouton" data-action="rejouer" type="button">Retour à l'accueil</button>
       </div>
     </main>
   `;
