@@ -122,6 +122,57 @@ export const EVENEMENTS: readonly GameEvent[] = [
       },
     ],
   },
+  /**
+   * Ajouté hors calibrage initial (demande post-lancement) : événement de
+   * réparation de coque dédié, distinct de la fuite mineure (urgence
+   * ponctuelle) — ici une halte volontaire à un chantier abandonné.
+   */
+  {
+    id: "chantier-naval",
+    categorie: "Ressources",
+    nom: "Chantier naval abandonné",
+    options: [
+      {
+        id: "chantier-naval-reparation-minutieuse",
+        label: "Réparation minutieuse",
+        type: "aleatoire",
+        skillGouvernant: "mecanique",
+        pBase: 60,
+        cout: { stat: "monnaieRun", montant: 5000 },
+        gains: [
+          { stat: "coque", montant: 35 },
+          { stat: "mecanique", montant: 8 },
+        ],
+        pertes: [
+          { stat: "coque", montant: 10 },
+          { stat: "mecanique", montant: 5 },
+        ],
+        note: "Un chantier naval abandonné, mais les outils fonctionnent encore. En cas d'échec, la réparation est bâclée et une partie du matériel est gâchée.",
+      },
+      {
+        id: "chantier-naval-reparation-sommaire",
+        label: "Réparation sommaire",
+        type: "aleatoire",
+        skillGouvernant: "mecanique",
+        pBase: 85,
+        cout: { stat: "monnaieRun", montant: 2000 },
+        gains: [{ stat: "coque", montant: 15 }],
+        pertes: [],
+        note: "Un bricolage rapide, sans prétention, mais qui tient la route la plupart du temps.",
+      },
+      {
+        id: "chantier-naval-passer",
+        label: "Passer son chemin",
+        type: "deterministe",
+        skillGouvernant: null,
+        pBase: null,
+        cout: null,
+        gains: [],
+        pertes: [],
+        note: null,
+      },
+    ],
+  },
   {
     id: "station-ravitaillement",
     categorie: "Ressources",

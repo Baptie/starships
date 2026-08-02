@@ -6,8 +6,8 @@ export interface ResolutionExploration {
   type: TypePlanete;
   monnaieRunGagnee: number;
   monnaieRunPerduePourcent: number;
-  /** Non nul uniquement pour Infernale : nouvelle valeur de coque, ou explosion. */
-  coque: { explosion: boolean; nouvelleValeur: number | null };
+  /** Non nul uniquement pour Infernale : nouvelle valeur de coque, dégâts subis, ou explosion. */
+  coque: { explosion: boolean; nouvelleValeur: number | null; degats: number };
   irridiumGagne: number;
   /**
    * Anomalie uniquement. Un trophée n'est effectivement accordé que si la
@@ -31,7 +31,7 @@ export function resoudreExplorationPlanete(
     type: planete.type,
     monnaieRunGagnee: 0,
     monnaieRunPerduePourcent: 0,
-    coque: { explosion: false, nouvelleValeur: null },
+    coque: { explosion: false, nouvelleValeur: null, degats: 0 },
     irridiumGagne: 0,
     tropheeEligible: false,
     victoirePossible: false,
@@ -55,10 +55,11 @@ export function resoudreExplorationPlanete(
       return { ...base, victoirePossible: true };
     case "infernale": {
       const explosion = coqueActuelle <= INFERNALE.coquePlancherPourcent;
+      const nouvelleValeur = explosion ? 0 : INFERNALE.coquePlancherPourcent;
       return {
         ...base,
         monnaieRunPerduePourcent: INFERNALE.perteMonnaieRunPourcent,
-        coque: { explosion, nouvelleValeur: explosion ? 0 : INFERNALE.coquePlancherPourcent },
+        coque: { explosion, nouvelleValeur, degats: coqueActuelle - nouvelleValeur },
       };
     }
   }

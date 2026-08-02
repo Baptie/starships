@@ -52,6 +52,21 @@ export const MESSAGES_OPTIONS: Record<string, MessagesOption> = {
     echec: "Le colmatage cède presque aussitôt — la fuite continue de ronger la coque.",
     echecCritique: "Le rafistolage explose en pleine réparation, aggravant la fuite et sapant la confiance de l'équipe technique.",
   },
+  "chantier-naval-reparation-minutieuse": {
+    reussiteCritique: "L'équipe improvisée fait des miracles : la coque ressort du chantier comme neuve.",
+    reussite: "La réparation minutieuse redonne à la coque une bonne partie de son intégrité.",
+    echec: "La réparation ne tient qu'à moitié — une partie du matériel est gâchée dans l'opération.",
+    echecCritique: "Le chantier se révèle piégé : les outils lâchent en pleine réparation, gâchant du matériel et compliquant la manœuvre.",
+  },
+  "chantier-naval-reparation-sommaire": {
+    reussiteCritique: "Le bricolage tient mieux que prévu, presque du travail de professionnel.",
+    reussite: "Un bricolage rapide, mais qui tient la route.",
+    echec: "Le bricolage ne prend pas correctement — la coque reste dans le même état.",
+    echecCritique: "Le bricolage échoue complètement — le temps et l'argent investis n'auront servi à rien.",
+  },
+  "chantier-naval-passer": {
+    resultat: "Le chantier abandonné est laissé derrière, sans qu'on y touche.",
+  },
   "station-ravitaillement-negocier": {
     reussiteCritique: "Le plein est fait à un tarif dérisoire, avec le sourire du gérant en prime.",
     reussite: "Le plein est fait au prix négocié.",

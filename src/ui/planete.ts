@@ -1,3 +1,9 @@
+import {
+  MESSAGE_INFERNALE,
+  MESSAGE_INFERNALE_EXPLOSION,
+  MESSAGE_PARADISIAQUE,
+  MESSAGES_SCAN_EVITE,
+} from "../data/planetMessages";
 import type { Planete } from "../engine/planetGenerator";
 import type { ResultatExploration } from "../engine/state";
 import type { RunState } from "../engine/types";
@@ -50,6 +56,8 @@ export function rendreResultatScan(
   gain: number,
   onContinuer: () => void,
 ): void {
+  const messageEvite = MESSAGES_SCAN_EVITE[planete.type];
+
   racine.innerHTML = `
     ${rendreJauges(run)}
     <main>
@@ -61,6 +69,7 @@ export function rendreResultatScan(
         <ul class="effets">
           <li class="effet effet--gain">${iconeSlag(14)}<span>Slag +${formatNombre(gain)}</span></li>
         </ul>
+        ${messageEvite ? `<p class="muted">${messageEvite}</p>` : ""}
         <button class="bouton" data-action="continuer" type="button">Continuer</button>
       </div>
     </main>
@@ -93,7 +102,7 @@ export function rendreResultatPlanete(
     lignes.push(`<li class="effet effet--perte">${iconeCoque(14)}<span>Coque détruite — explosion</span></li>`);
   } else if (resolution.coque.nouvelleValeur !== null) {
     lignes.push(
-      `<li class="effet effet--perte">${iconeCoque(14)}<span>Coque ramenée à ${resolution.coque.nouvelleValeur}</span></li>`,
+      `<li class="effet effet--perte">${iconeCoque(14)}<span>Coque -${resolution.coque.degats}</span></li>`,
     );
   }
   if (nouveauTrophee) {
@@ -107,13 +116,30 @@ export function rendreResultatPlanete(
 
   const estParadisiaque = resolution.type === "paradisiaque" && run.statut === "en_cours";
 
+  const badgeType =
+    resolution.type === "infernale"
+      ? '<span class="type-planete-badge type-planete-badge--infernale">Danger — Infernale</span>'
+      : resolution.type === "paradisiaque"
+        ? '<span class="type-planete-badge type-planete-badge--paradisiaque">Paradisiaque</span>'
+        : '<span class="muted">Type de planète</span>';
+
+  const messageType =
+    resolution.type === "infernale"
+      ? resolution.coque.explosion
+        ? MESSAGE_INFERNALE_EXPLOSION
+        : MESSAGE_INFERNALE
+      : resolution.type === "paradisiaque"
+        ? MESSAGE_PARADISIAQUE
+        : null;
+
   racine.innerHTML = `
     ${rendreJauges(run)}
     <main>
       <div class="carte">
-        <span class="muted">Type de planète</span>
+        ${badgeType}
         ${rendreIllustrationPlanete(planete.caracteristiques, 96, resolution.type)}
         <h2>${LABELS_TYPE_PLANETE[resolution.type]}</h2>
+        ${messageType ? `<p>${messageType}</p>` : ""}
         <p class="muted">${planete.nom} — ${planete.description}</p>
         <ul class="effets">${lignes.join("")}</ul>
         ${lignes.length === 0 ? '<p class="muted">Aucun effet.</p>' : ""}
