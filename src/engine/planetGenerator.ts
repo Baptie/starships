@@ -53,9 +53,9 @@ function genererNom(c: CaracteristiquesPlanete): string {
   return `${PREFIXES_SYSTEME[c.systeme]}${capitaliser(tirerRacine())}${SUFFIXES_CLIMAT[c.climat]}`;
 }
 
-/** [Terrain] [Atmosphère], climat [Climat], [Écosystème]. */
+/** [Terrain], Atmosphère [Atmosphère], climat [Climat], [Écosystème]. */
 export function genererDescription(c: CaracteristiquesPlanete): string {
-  return `${c.terrain} ${c.atmosphere}, climat ${c.climat}, ${c.ecosysteme}.`;
+  return `${c.terrain}, Atmosphère ${c.atmosphere}, climat ${c.climat}, ${c.ecosysteme}.`;
 }
 
 export function cleCaracteristiques(c: CaracteristiquesPlanete): string {

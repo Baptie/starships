@@ -87,6 +87,12 @@ function avancer(): void {
     return;
   }
   passerAuSlotSuivant(run);
+  // L'ouverture d'un nouveau chapitre consomme du carburant et peut à elle
+  // seule provoquer une défaite : revérifier avant d'afficher le slot tiré.
+  if (run.statut !== "en_cours") {
+    afficherFin(null);
+    return;
+  }
   afficherSlotCourant();
 }
 

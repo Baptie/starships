@@ -1,5 +1,11 @@
 import { EVENEMENTS } from "../data/events";
-import { EVENEMENTS_PAR_CHAPITRE, MONNAIE_RUN_INITIALE, SOLDE_CHAPITRE, STATS_INITIALES } from "../data/stats";
+import {
+  CARBURANT_PAR_CHAPITRE,
+  EVENEMENTS_PAR_CHAPITRE,
+  MONNAIE_RUN_INITIALE,
+  SOLDE_CHAPITRE,
+  STATS_INITIALES,
+} from "../data/stats";
 import { GAIN_SCAN_DISTANCE, SLAG_PAR_IRRIDIUM_VICTOIRE } from "../data/planets";
 import { genererNomGalaxie } from "./galaxyGenerator";
 import type { Planete } from "./planetGenerator";
@@ -64,8 +70,10 @@ export function ouvrirChapitre(run: RunState): void {
   run.chapitre += 1;
   run.nomGalaxie = genererNomGalaxie();
   run.monnaieRun += SOLDE_CHAPITRE;
+  run.stats.carburant = clamp(run.stats.carburant - CARBURANT_PAR_CHAPITRE, 0, 100);
   run.fileEvenements = tirerSlotsChapitre();
   run.slotCourant = run.fileEvenements.shift() ?? null;
+  verifierFinDefaite(run);
 }
 
 /** À appeler après acquittement du résultat courant par le joueur. */

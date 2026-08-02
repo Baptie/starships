@@ -47,4 +47,7 @@ export const P_BASE = {
 /** Solde versé par la station commanditaire à l'ouverture de chaque chapitre. */
 export const SOLDE_CHAPITRE = 5000;
 
+/** Carburant consommé par le trajet vers la galaxie suivante, à l'ouverture de chaque chapitre. */
+export const CARBURANT_PAR_CHAPITRE = 5;
+
 export const EVENEMENTS_PAR_CHAPITRE = { min: 2, max: 4 } as const;
