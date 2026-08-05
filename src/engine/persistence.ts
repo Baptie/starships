@@ -1,4 +1,6 @@
+import type { AnomalyKind } from "../data/anomalyKinds";
 import type { CaracteristiquesPlanete } from "../data/planets";
+import type { RarityTier } from "./planetRarity";
 import type { StatutRun } from "./types";
 
 /**
@@ -17,6 +19,10 @@ export interface Trophee {
   cle: string;
   nom: string;
   caracteristiques: CaracteristiquesPlanete;
+  /** Seed d'instance du rendu pixel art, à réutiliser pour un visuel stable (engine/planetArt.ts). */
+  instanceSeed: number;
+  anomalyKind: AnomalyKind;
+  rarity: RarityTier;
 }
 
 export function chargerMonnaiePersistante(): number {
@@ -31,10 +37,22 @@ export function ajouterMonnaiePersistante(montant: number): number {
   return total;
 }
 
+/**
+ * Les trophées enregistrés avant l'ajout des cartes (instanceSeed/anomalyKind/
+ * rarity) n'ont pas ces champs : ils sont écartés plutôt que de faire planter
+ * la galerie, aucune migration prévue pour ce prototype en cours d'itération.
+ */
 function estTrophee(valeur: unknown): valeur is Trophee {
   if (typeof valeur !== "object" || valeur === null) return false;
   const candidat = valeur as Record<string, unknown>;
-  return typeof candidat["cle"] === "string" && typeof candidat["nom"] === "string";
+  return (
+    typeof candidat["cle"] === "string" &&
+    typeof candidat["nom"] === "string" &&
+    typeof candidat["instanceSeed"] === "number" &&
+    typeof candidat["rarity"] === "string" &&
+    typeof candidat["anomalyKind"] === "object" &&
+    candidat["anomalyKind"] !== null
+  );
 }
 
 export function chargerTrophees(): Trophee[] {

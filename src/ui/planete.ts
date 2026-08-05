@@ -23,7 +23,7 @@ export function rendrePlaneteDetection(
     <main>
       <div class="carte">
         <span class="muted entete-icone">${iconePlanete()}Planète détectée</span>
-        ${rendreIllustrationPlanete(planete.caracteristiques)}
+        ${rendreIllustrationPlanete(planete)}
         <h2>${planete.nom}</h2>
         <p>${planete.description}</p>
         <div class="options">
@@ -63,7 +63,7 @@ export function rendreResultatScan(
     <main>
       <div class="carte">
         <span class="muted entete-icone">${iconePlanete()}Scan à distance</span>
-        ${rendreIllustrationPlanete(planete.caracteristiques)}
+        ${rendreIllustrationPlanete(planete)}
         <h2>${planete.nom}</h2>
         <p class="muted">${planete.description}</p>
         <ul class="effets">
@@ -137,7 +137,7 @@ export function rendreResultatPlanete(
     <main>
       <div class="carte">
         ${badgeType}
-        ${rendreIllustrationPlanete(planete.caracteristiques, 96, resolution.type)}
+        ${rendreIllustrationPlanete(planete, undefined, resolution.type)}
         <h2>${LABELS_TYPE_PLANETE[resolution.type]}</h2>
         ${messageType ? `<p>${messageType}</p>` : ""}
         <p class="muted">${planete.nom} — ${planete.description}</p>

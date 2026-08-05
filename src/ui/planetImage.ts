@@ -1,40 +1,29 @@
-import type { CaracteristiquesPlanete, TypePlanete } from "../data/planets";
-
-const BASE = "/assets/planets/";
-
-const IMAGES = {
-  lave: `${BASE}planet_lave.png`,
-  glace: `${BASE}planete_glace.png`,
-  jungle: `${BASE}planet_jungle.png`,
-  verte: `${BASE}planete_verte.png`,
-  morte: `${BASE}planete_morte.png`,
-  anomalie: `${BASE}planet_anomalie.png`,
-} as const;
-
-const TERRAINS_LUXURIANTS = new Set(["Eau", "Jungle"]);
+import type { TypePlanete } from "../data/planets";
+import type { Planete } from "../engine/planetGenerator";
+import { genererImagesPlanete, imageEnDataUrl } from "../engine/planetArt";
 
 /**
- * Choisit l'illustration. Une Anomalie a son propre visuel dédié (prioritaire
- * sur climat/terrain). Sinon, choix selon climat + terrain uniquement (pas
- * atmosphère/écosystème, cf. demande) : les climats extrêmes (Infernal,
- * Glacial/Froid) priment et fixent le visuel ; pour Chaud/Tempéré, le
- * terrain départage monde luxuriant (Eau/Jungle) vs aride.
- *
  * `type` n'est à passer que lorsque le type de la planète est révélé au
- * joueur (écran de résultat d'exploration, galerie des Anomalies) — la
- * détection et le scan à distance ne le connaissent pas encore et ne
- * doivent pas montrer le visuel Anomalie en avance.
+ * joueur (écran de résultat d'exploration) — la détection et le scan à
+ * distance ne le connaissent pas encore et ne doivent pas montrer l'effet
+ * visuel Anomalie en avance. Sans lui, le rendu reste celui d'une Classique
+ * (mêmes traits, sans le halo néon).
+ *
+ * Présentée comme un hologramme (coins de visée, scanlines, socle lumineux)
+ * plutôt qu'une simple image.
  */
-export function imagePlanete(c: CaracteristiquesPlanete, type?: TypePlanete): string {
-  if (type === "anomalie") return IMAGES.anomalie;
-  if (c.climat === "Infernal") return IMAGES.lave;
-  if (c.climat === "Glacial" || c.climat === "Froid") return IMAGES.glace;
-
-  const luxuriant = TERRAINS_LUXURIANTS.has(c.terrain);
-  if (c.climat === "Chaud") return luxuriant ? IMAGES.jungle : IMAGES.lave;
-  return luxuriant ? IMAGES.verte : IMAGES.morte; // Tempéré
-}
-
-export function rendreIllustrationPlanete(c: CaracteristiquesPlanete, taille = 96, type?: TypePlanete): string {
-  return `<img class="illustration-planete" src="${imagePlanete(c, type)}" width="${taille}" height="${taille}" alt="" />`;
+export function rendreIllustrationPlanete(planete: Planete, taille = 176, type?: TypePlanete): string {
+  const { big } = genererImagesPlanete(planete.caracteristiques, type ?? "classique", planete.instanceSeed);
+  const src = imageEnDataUrl(big, taille / 64);
+  return `
+    <div class="hologramme-planete">
+      <span class="affichage-holo__coin affichage-holo__coin--haut-gauche"></span>
+      <span class="affichage-holo__coin affichage-holo__coin--haut-droite"></span>
+      <span class="affichage-holo__coin affichage-holo__coin--bas-gauche"></span>
+      <span class="affichage-holo__coin affichage-holo__coin--bas-droite"></span>
+      <img class="hologramme-planete__image" src="${src}" width="${taille}" height="${taille}" alt="" />
+      <span class="affichage-holo__scanlines"></span>
+      <span class="affichage-holo__socle"></span>
+    </div>
+  `;
 }

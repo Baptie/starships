@@ -10,6 +10,8 @@ import { GAIN_SCAN_DISTANCE, SLAG_PAR_IRRIDIUM_VICTOIRE } from "../data/planets"
 import { genererNomGalaxie } from "./galaxyGenerator";
 import type { Planete } from "./planetGenerator";
 import { genererPlanete } from "./planetGenerator";
+import { determinerNatureAnomalie } from "./planetArt";
+import { determinerRarete } from "./planetRarity";
 import { resoudreExplorationPlanete, type ResolutionExploration } from "./planetResolution";
 import { ajouterMonnaiePersistante, ajouterTrophee, possedeTrophee } from "./persistence";
 import { clamp, tirerEntier } from "./random";
@@ -168,6 +170,9 @@ export function explorerPlanete(run: RunState, planete: Planete): ResultatExplor
       cle: planete.cleTrophee,
       nom: planete.nom,
       caracteristiques: planete.caracteristiques,
+      instanceSeed: planete.instanceSeed,
+      anomalyKind: determinerNatureAnomalie(planete.caracteristiques),
+      rarity: determinerRarete(planete.caracteristiques),
     });
   }
   if (resolution.irridiumGagne > 0) {

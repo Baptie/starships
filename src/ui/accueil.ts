@@ -1,3 +1,4 @@
+import pkg from "../../package.json";
 import { chargerMonnaiePersistante, chargerTrophees } from "../engine/persistence";
 import { iconeAnomalie, iconeIrridiumCompteur } from "./icons";
 import { ouvrirGalerieAnomalies } from "./anomalies";
@@ -7,12 +8,13 @@ import { ouvrirHistorique } from "./historique";
 export function rendreAccueil(racine: HTMLElement, onNouveauDepart: () => void): void {
   const irridium = chargerMonnaiePersistante();
   const trophees = chargerTrophees().length;
+  const annee = new Date().getFullYear();
 
   racine.innerHTML = `
     <main>
       <div class="carte">
         <div class="entete-icone">
-          <img src="/assets/starships_logo.png" width="32" height="32" class="icone icone--image" alt="" aria-hidden="true" />
+          <img src="/assets/starships_logo.png" width="32" height="32" class="icone icone--image icone--logo" alt="" aria-hidden="true" />
           <h1>Starships</h1>
         </div>
         <p class="muted">Dirigez un vaisseau et son équipage à travers des galaxies. Découvrez un maximum de planètes avant de perdre le vaisseau — ou trouvez un monde où vous installer.</p>
@@ -26,6 +28,10 @@ export function rendreAccueil(racine: HTMLElement, onNouveauDepart: () => void):
       <div class="carte">
         <button class="bouton" data-action="nouveau-depart" type="button">Nouveau départ</button>
       </div>
+      <footer class="pied-credits">
+        <span>© ${annee} Baptiste Caron</span>
+        <span>v${pkg.version}</span>
+      </footer>
     </main>
   `;
 

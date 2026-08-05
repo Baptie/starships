@@ -4,7 +4,13 @@
  */
 
 export type Climat = "Infernal" | "Chaud" | "Tempéré" | "Froid" | "Glacial";
-export type Terrain = "Eau" | "Jungle" | "Désert rocailleux" | "Désert glacé" | "Gaz";
+/**
+ * "Désert" est un terrain générique : sa variante d'affichage et de rendu
+ * (glacé / volcanique / rocailleux) est dérivée du climat, pas tirée
+ * indépendamment — sinon on obtient des absurdités type "désert glacé"
+ * sous climat Chaud. Voir `varianteDesert`/`libelleTerrain` ci-dessous.
+ */
+export type Terrain = "Eau" | "Jungle" | "Désert" | "Gaz";
 export type Atmosphere = "Inexistante" | "Toxique" | "Irrespirable" | "Respirable" | "Dense";
 export type Systeme = "Errante" | "1 soleil" | "2 soleils" | "3 soleils" | "Trou noir" | "Étoile à neutrons";
 export type Ecosysteme =
@@ -85,8 +91,7 @@ export const CARACTERISTIQUES_PAR_TYPE: Record<TypePlanete, TablesCaracteristiqu
     terrain: [
       { valeur: "Eau", poids: 1 },
       { valeur: "Jungle", poids: 1 },
-      { valeur: "Désert rocailleux", poids: 1 },
-      { valeur: "Désert glacé", poids: 1 },
+      { valeur: "Désert", poids: 2 },
       { valeur: "Gaz", poids: 1 },
     ],
     atmosphere: [
@@ -124,8 +129,7 @@ export const CARACTERISTIQUES_PAR_TYPE: Record<TypePlanete, TablesCaracteristiqu
     terrain: [
       { valeur: "Eau", poids: 5 },
       { valeur: "Jungle", poids: 5 },
-      { valeur: "Désert rocailleux", poids: 2 },
-      { valeur: "Désert glacé", poids: 1 },
+      { valeur: "Désert", poids: 3 },
       { valeur: "Gaz", poids: 1 },
     ],
     atmosphere: [
@@ -163,8 +167,7 @@ export const CARACTERISTIQUES_PAR_TYPE: Record<TypePlanete, TablesCaracteristiqu
     terrain: [
       { valeur: "Eau", poids: 1 },
       { valeur: "Jungle", poids: 1 },
-      { valeur: "Désert rocailleux", poids: 5 },
-      { valeur: "Désert glacé", poids: 2 },
+      { valeur: "Désert", poids: 7 },
       { valeur: "Gaz", poids: 4 },
     ],
     atmosphere: [
@@ -202,8 +205,7 @@ export const CARACTERISTIQUES_PAR_TYPE: Record<TypePlanete, TablesCaracteristiqu
     terrain: [
       { valeur: "Eau", poids: 1 },
       { valeur: "Jungle", poids: 1 },
-      { valeur: "Désert rocailleux", poids: 1 },
-      { valeur: "Désert glacé", poids: 1 },
+      { valeur: "Désert", poids: 2 },
       { valeur: "Gaz", poids: 1 },
     ],
     atmosphere: [
@@ -230,6 +232,20 @@ export const CARACTERISTIQUES_PAR_TYPE: Record<TypePlanete, TablesCaracteristiqu
     ],
   },
 };
+
+export type VarianteDesert = "glacé" | "volcanique" | "rocailleux";
+
+/** Le désert n'est jamais glacé sous un climat chaud, ni volcanique sous un climat froid. */
+export function varianteDesert(climat: Climat): VarianteDesert {
+  if (climat === "Glacial" || climat === "Froid") return "glacé";
+  if (climat === "Infernal" || climat === "Chaud") return "volcanique";
+  return "rocailleux"; // Tempéré
+}
+
+/** Libellé affiché du terrain : le Désert précise sa variante selon le climat. */
+export function libelleTerrain(c: CaracteristiquesPlanete): string {
+  return c.terrain === "Désert" ? `Désert ${varianteDesert(c.climat)}` : c.terrain;
+}
 
 export const PREFIXES_SYSTEME: Record<Systeme, string> = {
   Errante: "Kesh-",

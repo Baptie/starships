@@ -215,3 +215,6 @@ Ne pas coder de valeur en dur dans le moteur : les données de jeu vivent dans
 - Pas de `localStorage` mocké : la persistance locale est une vraie contrainte fonctionnelle.
 - Toute nouvelle option d'événement doit déclarer : skill gouvernant, P_base,
   coût éventuel, 1-2 gains, 1-2 pertes, et une note explicative.
+- Versionning : le champ `version` de `package.json` (affiché en pied de page
+  de l'accueil) doit être mis à jour à chaque nouveau tag Git, pour rester
+  synchrone avec le tag créé.

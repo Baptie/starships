@@ -1,6 +1,7 @@
 import {
   BANQUE_RACINES,
   CARACTERISTIQUES_PAR_TYPE,
+  libelleTerrain,
   PREFIXES_SYSTEME,
   SUFFIXES_CLIMAT,
   TYPES_PLANETE,
@@ -16,6 +17,8 @@ export interface Planete {
   description: string;
   /** Clé stable identifiant la combinaison exacte des 5 caractéristiques (trophées). */
   cleTrophee: string;
+  /** Tiré une fois à la génération, à réutiliser pour tout rendu (voir engine/planetArt.ts). */
+  instanceSeed: number;
 }
 
 function tirerTypePlanete(): TypePlanete {
@@ -55,7 +58,7 @@ function genererNom(c: CaracteristiquesPlanete): string {
 
 /** [Terrain], Atmosphère [Atmosphère], climat [Climat], [Écosystème]. */
 export function genererDescription(c: CaracteristiquesPlanete): string {
-  return `${c.terrain}, Atmosphère ${c.atmosphere}, climat ${c.climat}, ${c.ecosysteme}.`;
+  return `${libelleTerrain(c)}, Atmosphère ${c.atmosphere}, climat ${c.climat}, ${c.ecosysteme}.`;
 }
 
 export function cleCaracteristiques(c: CaracteristiquesPlanete): string {
@@ -71,5 +74,6 @@ export function genererPlanete(): Planete {
     nom: genererNom(caracteristiques),
     description: genererDescription(caracteristiques),
     cleTrophee: cleCaracteristiques(caracteristiques),
+    instanceSeed: (Math.random() * 0x100000000) >>> 0,
   };
 }
